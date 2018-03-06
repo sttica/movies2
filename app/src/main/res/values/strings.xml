@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">movies</string>
+
+    <string name="title_label">Movie title</string>
+    <string name="releaseDate_label">01.01.2018</string>
+    <string name="vote_label">7.7</string>
+    <string name="plot_label">This movie is about ...</string>
+
+    <string name="poster_ContentDescription">Movie poster</string>
+
+    <string name="posterLoadSize" translatable="false">w154</string>
+
 </resources>
