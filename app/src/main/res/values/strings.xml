@@ -1,13 +1,24 @@
 <resources>
     <string name="app_name">movies</string>
 
-    <string name="title_label">Movie title</string>
-    <string name="releaseDate_label">01.01.2018</string>
-    <string name="vote_label">7.7</string>
-    <string name="plot_label">This movie is about ...</string>
+    <string name="title_label" translatable="false">Movie title</string>
+    <string name="releaseDate_label" translatable="false">01.01.2018</string>
+    <string name="vote_label" translatable="false">7.7</string>
+    <string name="plot_label" translatable="false">This movie is about ...</string>
 
     <string name="poster_ContentDescription">Movie poster</string>
+    <string name="action_settings">Settings</string>
+
 
     <string name="posterLoadSize" translatable="false">w154</string>
+
+    <string name="pref_sort_order_default_value" translatable="true">popular</string>
+    <string name="pref_sort_order_key" translatable="true">sort</string>
+    <string name="pref_sort_order_label" translatable="true">Sort order</string>
+    <string name="pref_sort_order_popular_label" translatable="true">most popular</string>
+    <string name="pref_sort_order_rated_label" translatable="true">highest rated</string>
+    <string name="pref_sort_order_popular_value" translatable="true">popular</string>
+    <string name="pref_sort_order_rated_value" translatable="true">highest</string>
+
 
 </resources>

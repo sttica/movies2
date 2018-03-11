@@ -1,6 +1,7 @@
 package com.example.android.movies;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -9,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.android.movies.databinding.ActivityMainBinding;
 import com.example.android.movies.utilities.NetworkUtils;
@@ -17,7 +21,7 @@ import com.example.android.movies.utilities.themovieDbJsonUtils;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements
-        GridAdapter.GridAdapterOnClickHandler, LoaderCallbacks<String[]> {
+        GridAdapter.GridAdapterOnClickHandler, LoaderCallbacks<String[]>,SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = themovieDbJsonUtils.class.getSimpleName();
 
@@ -120,8 +124,32 @@ public class MainActivity extends AppCompatActivity implements
 
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent startSettingsActivity = new Intent(this, SettingsActivity.class);
+            startActivity(startSettingsActivity);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onClick() {
         Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
         startActivity(detailIntent);
     }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+
+    }
+
 }
