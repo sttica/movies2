@@ -13,12 +13,12 @@
     <string name="posterLoadSize" translatable="false">w154</string>
 
     <string name="pref_sort_order_default_value" translatable="true">popular</string>
-    <string name="pref_sort_order_key" translatable="true">sort</string>
+    <string name="pref_sort_order_key" translatable="false">sort</string>
     <string name="pref_sort_order_label" translatable="true">Sort order</string>
     <string name="pref_sort_order_popular_label" translatable="true">most popular</string>
     <string name="pref_sort_order_rated_label" translatable="true">highest rated</string>
     <string name="pref_sort_order_popular_value" translatable="true">popular</string>
-    <string name="pref_sort_order_rated_value" translatable="true">highest</string>
+    <string name="pref_sort_order_rated_value" translatable="true">top_rated</string>
 
 
 </resources>

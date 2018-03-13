@@ -41,7 +41,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridAdapterVie
 
         Context context = gridAdapterViewHolder.posterView.getContext();
 
-        String pathToPoster = NetworkUtils.BASE_URL + "/" + context.getString(R.string.posterLoadSize) + "/" + mMovieData[position];
+        String pathToPoster = NetworkUtils.BASE_IMG_URL + "/" + context.getString(R.string.posterLoadSize) + "/" + mMovieData[position];
 
         //Log.v(TAG, "Poster path " + String.valueOf(position) + ": " + pathToPoster);
 

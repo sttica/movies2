@@ -1,7 +1,6 @@
 package com.example.android.movies.utilities;
 
 import android.net.Uri;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +8,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
+
+import static java.lang.String.valueOf;
 
 /**
  * Created by Timo on 01.03.2018.
@@ -18,14 +19,16 @@ public class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    public static final String BASE_URL = "https://image.tmdb.org/t/p/";
+    public static final String BASE_IMG_URL = "https://image.tmdb.org/t/p/";
 
-    private static final String STATIC_POPULAR_URL =
-            "https://api.themoviedb.org/3/movie/popular";
+    private static final String BASE_URL =
+            "https://api.themoviedb.org/3/movie/";
 
-    public static URL buildUrl(String popularQuery, String API_KEY) {
-        Uri uri = Uri.parse(STATIC_POPULAR_URL).buildUpon()
-                .appendQueryParameter("api_key", String.valueOf(API_KEY))
+    public static URL buildUrl(String type,String API_KEY) {
+
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(type)
+                .appendQueryParameter("api_key", valueOf(API_KEY))
                 .build();
 
         URL url = null;
@@ -34,8 +37,6 @@ public class NetworkUtils {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
-        Log.v(TAG, "Built URI " + url);
 
         return url;
     }

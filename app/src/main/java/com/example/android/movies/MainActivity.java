@@ -1,5 +1,6 @@
 package com.example.android.movies;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Base64;
 import android.util.Log;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements
         GridAdapter.GridAdapterOnClickHandler, LoaderCallbacks<String[]>,SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = themovieDbJsonUtils.class.getSimpleName();
+
+    private String mRequestType;
 
     private GridAdapter mGridAdapter;
 
@@ -53,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements
         mGridAdapter = new GridAdapter(this,this);
         mBinding.recyclerView.setAdapter(mGridAdapter);
 
+        setupSharedPreferences();
+
         int loaderId = MOVIES_LOADER_ID;
 
         android.support.v4.app.LoaderManager.LoaderCallbacks<String[]> callback = MainActivity.this;
@@ -63,7 +69,14 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    private void setupSharedPreferences() {
+        // Get all of the values from shared preferences to set it up
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mRequestType = sharedPreferences.getString(getString(R.string.pref_sort_order_key),getString(R.string.pref_sort_order_default_value));
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public android.support.v4.content.Loader<String[]> onCreateLoader(int id, final Bundle loaderArgs) {
         return new AsyncTaskLoader<String[]>(this) {
@@ -82,9 +95,7 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public String[] loadInBackground() {
 
-                //TODO set type via settings
-                String type = "popular";
-                URL movieRequestUrl = NetworkUtils.buildUrl(type,API_KEY);
+                URL movieRequestUrl = NetworkUtils.buildUrl(mRequestType, API_KEY);
 
                 try {
                     String jsonMovieResponse = NetworkUtils
@@ -150,6 +161,13 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .unregisterOnSharedPreferenceChangeListener(this);
     }
 
 }

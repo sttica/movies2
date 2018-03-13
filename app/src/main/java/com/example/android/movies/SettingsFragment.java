@@ -58,15 +58,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
      */
     private void setPreferenceSummary(android.support.v7.preference.Preference preference, String value) {
         if (preference instanceof ListPreference) {
-            // For list preferences, figure out the label of the selected value
             ListPreference listPreference = (ListPreference) preference;
             int prefIndex = listPreference.findIndexOfValue(value);
             if (prefIndex >= 0) {
-                // Set the summary to that label
                 listPreference.setSummary(listPreference.getEntries()[prefIndex]);
             }
         } else if (preference instanceof EditTextPreference) {
-            // For EditTextPreferences, set the summary to the value's simple string representation.
             preference.setSummary(value);
         }
     }
@@ -84,4 +81,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPreferenceScreen().getSharedPreferences()
+                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
+    }
+
 }
