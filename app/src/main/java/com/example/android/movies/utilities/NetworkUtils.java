@@ -24,10 +24,27 @@ public class NetworkUtils {
     private static final String BASE_URL =
             "https://api.themoviedb.org/3/movie/";
 
-    public static URL buildUrl(String type,String API_KEY) {
+    public static URL buildMainUrl(String type,String API_KEY) {
 
         Uri uri = Uri.parse(BASE_URL).buildUpon()
                 .appendPath(type)
+                .appendQueryParameter("api_key", valueOf(API_KEY))
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static URL buildDetailUrl(String movieId,String API_KEY) {
+
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(movieId)
                 .appendQueryParameter("api_key", valueOf(API_KEY))
                 .build();
 

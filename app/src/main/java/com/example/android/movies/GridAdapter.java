@@ -8,21 +8,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.android.movies.data.Movies;
 import com.example.android.movies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridAdapterViewHolder>{
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
 
-    private String[] mMovieData;
+    private ArrayList<Movies> mMovieData;
 
     private final Context mContext;
     final private GridAdapterOnClickHandler mClickHandler;
 
     public interface GridAdapterOnClickHandler {
-        void onClick();
+        void onClick(int position);
     }
 
     GridAdapter(@NonNull Context context, GridAdapterOnClickHandler clickHandler) {
@@ -41,7 +44,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridAdapterVie
 
         Context context = gridAdapterViewHolder.posterView.getContext();
 
-        String pathToPoster = NetworkUtils.BASE_IMG_URL + "/" + context.getString(R.string.posterLoadSize) + "/" + mMovieData[position];
+        String pathToPoster = NetworkUtils.BASE_IMG_URL + "/" + context.getString(R.string.posterLoadSize) + "/" + mMovieData.get(position).poster;
 
         //Log.v(TAG, "Poster path " + String.valueOf(position) + ": " + pathToPoster);
 
@@ -52,7 +55,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridAdapterVie
     @Override
     public int getItemCount() {
         if (null == mMovieData) return 0;
-        return mMovieData.length;
+        return mMovieData.size();
     }
 
     public class GridAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -70,11 +73,11 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.GridAdapterVie
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            //mClickHandler.onClick();
+            mClickHandler.onClick(adapterPosition);
         }
     }
 
-    void setMovieData(String[] movieData) {
+    void setMovieData(ArrayList<Movies> movieData) {
         mMovieData = movieData;
         notifyDataSetChanged();
     }

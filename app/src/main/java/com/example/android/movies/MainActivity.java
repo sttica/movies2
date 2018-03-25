@@ -16,20 +16,24 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.android.movies.data.Movies;
 import com.example.android.movies.databinding.ActivityMainBinding;
 import com.example.android.movies.utilities.NetworkUtils;
 import com.example.android.movies.utilities.themovieDbJsonUtils;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements
-        GridAdapter.GridAdapterOnClickHandler, LoaderCallbacks<String[]>,SharedPreferences.OnSharedPreferenceChangeListener {
+        GridAdapter.GridAdapterOnClickHandler, LoaderCallbacks<ArrayList<Movies>>,SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = themovieDbJsonUtils.class.getSimpleName();
 
     private String mRequestType;
 
     private GridAdapter mGridAdapter;
+
+    private ArrayList<Movies> mMovieData = null;
 
     // load keys library
     static {
@@ -61,11 +65,15 @@ public class MainActivity extends AppCompatActivity implements
 
         int loaderId = MOVIES_LOADER_ID;
 
-        android.support.v4.app.LoaderManager.LoaderCallbacks<String[]> callback = MainActivity.this;
-
-        Bundle bundleForLoader = null;
-
-        getSupportLoaderManager().initLoader(loaderId, bundleForLoader, callback);
+        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+            android.support.v4.app.LoaderManager.LoaderCallbacks<ArrayList<Movies>> callback = MainActivity.this;
+            Bundle bundleForLoader = null;
+            getSupportLoaderManager().initLoader(loaderId, bundleForLoader, callback);
+        }
+        else {
+            mMovieData = savedInstanceState.getParcelableArrayList("movies");
+            mGridAdapter.setMovieData(mMovieData);
+        }
 
     }
 
@@ -76,12 +84,16 @@ public class MainActivity extends AppCompatActivity implements
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("movies", mMovieData);
+        super.onSaveInstanceState(outState);
+    }
+
     @SuppressLint("StaticFieldLeak")
     @Override
-    public android.support.v4.content.Loader<String[]> onCreateLoader(int id, final Bundle loaderArgs) {
-        return new AsyncTaskLoader<String[]>(this) {
-
-            String[] mMovieData = null;
+    public android.support.v4.content.Loader<ArrayList<Movies>> onCreateLoader(int id, final Bundle loaderArgs) {
+        return new AsyncTaskLoader<ArrayList<Movies>>(this) {
 
             @Override
             protected void onStartLoading() {
@@ -93,18 +105,18 @@ public class MainActivity extends AppCompatActivity implements
             }
 
             @Override
-            public String[] loadInBackground() {
+            public ArrayList<Movies> loadInBackground() {
 
-                URL movieRequestUrl = NetworkUtils.buildUrl(mRequestType, API_KEY);
+                URL movieRequestUrl = NetworkUtils.buildMainUrl(mRequestType, API_KEY);
 
                 try {
                     String jsonMovieResponse = NetworkUtils
                             .getResponseFromHttpUrl(movieRequestUrl);
 
-                    String[] simpleJsonMovieData = themovieDbJsonUtils
+                    ArrayList<Movies> simpleJsonMoviesData = themovieDbJsonUtils
                             .getMoviesFromJson(MainActivity.this, jsonMovieResponse);
 
-                    return simpleJsonMovieData;
+                    return simpleJsonMoviesData;
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -112,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
 
-            public void deliverResult(String[] data) {
+            public void deliverResult(ArrayList<Movies> data) {
                 mMovieData = data;
                 super.deliverResult(data);
             }
@@ -120,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadFinished(android.support.v4.content.Loader<String[]> loader, String[] data) {
+    public void onLoadFinished(android.support.v4.content.Loader<ArrayList<Movies>> loader, ArrayList<Movies> data) {
         if (data != null) {
             mGridAdapter.setMovieData(data);
         } else {
@@ -129,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoaderReset(android.support.v4.content.Loader<String[]> loader) {
+    public void onLoaderReset(android.support.v4.content.Loader<ArrayList<Movies>> loader) {
 
     }
 
@@ -153,8 +165,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onClick() {
+    public void onClick(int position) {
         Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
+        detailIntent.putExtra("movieId",mMovieData.get(position).movieId);
+        detailIntent.putExtra("API_KEY",API_KEY);
+        Log.v(TAG, "movieId" + mMovieData.get(position).movieId);
         startActivity(detailIntent);
     }
 
