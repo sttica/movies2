@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.util.Log;
 
 import com.example.android.movies.data.MovieContract;
-import com.example.android.movies.data.MovieProvider;
 
 public class DatabaseUtils {
 
@@ -27,7 +26,7 @@ public class DatabaseUtils {
                     };
 
             mCursor = context.getContentResolver().query(
-                    MovieContract.movieEntry.CONTENT_URI + MovieProvider.CODE_SHOW_MOVIE,
+                    MovieContract.BASE_CONTENT_URI.buildUpon().appendPath(MovieContract.PATH_FAVORITES).appendPath("/#").build(),
                     mProjection,
                     null,
                     mSelectionArgs,
@@ -35,7 +34,7 @@ public class DatabaseUtils {
             return true;
         }
         else return false;
-    };
+    }
 
     public static void addFavorite(String id, ContentValues contentValues, Context context){
 
@@ -50,10 +49,10 @@ public class DatabaseUtils {
         */
 
 
-    };
+    }
 
     public static void  removeFavorite(String id, Context context){
 
-    };
+    }
 
 }
