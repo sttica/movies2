@@ -3,15 +3,18 @@ package com.example.android.movies;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.example.android.movies.data.Movie;
 import com.example.android.movies.databinding.ActivityDetailBinding;
+import com.example.android.movies.utilities.DatabaseUtils;
 import com.example.android.movies.utilities.NetworkUtils;
 import com.example.android.movies.utilities.themovieDbJsonUtils;
 import com.squareup.picasso.Picasso;
@@ -23,6 +26,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private static final String TAG = themovieDbJsonUtils.class.getSimpleName();
 
+    public static SQLiteDatabase mDatabase;
+
     ActivityDetailBinding mBinding;
 
     private static final int MOVIE_LOADER_ID = 1;
@@ -33,9 +38,13 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     private ArrayList<Movie> mMovieData = null;
 
+    public Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = getApplicationContext();
 
         setContentView(R.layout.activity_detail);
 
@@ -61,6 +70,20 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             mMovieData = savedInstanceState.getParcelableArrayList("movie");
             populateUi();
         }
+
+        mBinding.favorite.setOnClickListener(new View.OnClickListener() {
+            //@Override
+            public void onClick(View v) {
+                if(!DatabaseUtils.isFavorite(movieId,context)){
+                    addFavorite();
+                    //DatabaseUtils.addFavorite(movieId, contentValues, getApplicationContext());
+                }else if(DatabaseUtils.isFavorite(movieId,context)){
+                    removeFavorite();
+                    //DatabaseUtils.removeFavorite(movieId, getApplicationContext());
+                }
+            }
+        });
+
     }
 
     @Override
@@ -128,11 +151,26 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         Context context = mBinding.poster.getContext();
         String pathToPoster = NetworkUtils.BASE_IMG_URL + "/" + context.getString(R.string.posterLoadSize) + "/" + mMovieData.get(0).poster_path;
         Picasso.with(context).load(pathToPoster).into(mBinding.poster);
+
+        if(!DatabaseUtils.isFavorite(movieId, context)){
+            removeFavorite();
+        }else if(DatabaseUtils.isFavorite(movieId, context)){
+            addFavorite();
+        }
+
     }
 
     @Override
     public void onLoaderReset(android.support.v4.content.Loader<ArrayList<Movie>> loader) {
 
     }
+
+    private void addFavorite(){
+        mBinding.favorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
+    };
+
+    private void removeFavorite(){
+        mBinding.favorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
+    };
 
 }

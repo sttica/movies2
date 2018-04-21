@@ -38,11 +38,23 @@
                 android:id="@+id/voteAverage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/vote_label"
+                app:layout_constraintEnd_toStartOf="@+id/favorite"
+                app:layout_constraintTop_toTopOf="@+id/releaseDate" />
+
+            <ImageView
+                android:id="@+id/favorite"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/vote_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/releaseDate" />
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_star_border_black_24dp"
+                android:contentDescription="@string/favorite_ContentDescription"
+                app:layout_constraintTop_toBottomOf="@+id/poster"
+                app:layout_constraintEnd_toEndOf="parent"                 />
 
             <TextView
                 android:id="@+id/plot"
