@@ -32,10 +32,10 @@ public class MovieProvider extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = MovieContract.CONTENT_AUTHORITY;
 
-        matcher.addURI(authority, MovieContract.PATH_FAVORITES + "/#", CODE_ADD_MOVIE);
-        matcher.addURI(authority, MovieContract.PATH_FAVORITES + "/#", CODE_SHOW_MOVIE);
+        matcher.addURI(authority, MovieContract.PATH_FAVORITES + "/a", CODE_ADD_MOVIE);
+        matcher.addURI(authority, MovieContract.PATH_FAVORITES + "/s", CODE_SHOW_MOVIE);
         matcher.addURI(authority, MovieContract.PATH_FAVORITES, CODE_SHOW_MOVIES);
-        matcher.addURI(authority, MovieContract.PATH_FAVORITES + "/#", CODE_DELETE_MOVIE);
+        matcher.addURI(authority, MovieContract.PATH_FAVORITES + "/d", CODE_DELETE_MOVIE);
 
         return matcher;
     }
@@ -72,8 +72,8 @@ public class MovieProvider extends ContentProvider {
 
             case CODE_SHOW_MOVIE:
                 Log.e(LOG_TAG, "CODE_SHOW_MOVIE: " + uri);
-
-                selection = MovieContract.movieEntry._ID + "=?";
+                //selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
+                selection = MovieContract.movieEntry.COLUMN_ID + "=?";
                 cursor = database.query(
                         MovieContract.movieEntry.TABLE_NAME,
                         projection,
@@ -114,6 +114,8 @@ public class MovieProvider extends ContentProvider {
 
         long id = -1;
 
+        Log.e(LOG_TAG, "INSERT: " + sUriMatcher.match(uri));
+
         switch (sUriMatcher.match(uri)) {
 
             case CODE_ADD_MOVIE: {
@@ -142,25 +144,21 @@ public class MovieProvider extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
 
-        int deleted;
-
         switch (sUriMatcher.match(uri)) {
 
             case CODE_DELETE_MOVIE: {
 
-                deleted = mOpenHelper.getWritableDatabase().delete(
+                int deleted = mOpenHelper.getWritableDatabase().delete(
 
                         MovieContract.movieEntry.TABLE_NAME,
                         selection,
                         selectionArgs);
-                break;
+                return deleted;
             }
 
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
         }
-
-        return deleted;
     }
 
     @Override

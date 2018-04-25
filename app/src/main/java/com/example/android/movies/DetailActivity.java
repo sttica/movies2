@@ -75,11 +75,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             //@Override
             public void onClick(View v) {
                 if(!DatabaseUtils.isFavorite(movieId,context)){
-                    addFavorite();
-                    //DatabaseUtils.addFavorite(movieId, contentValues, getApplicationContext());
+                    isFavoriteUi();
+                    DatabaseUtils.addFavorite(mMovieData, movieId, context);
                 }else if(DatabaseUtils.isFavorite(movieId,context)){
-                    removeFavorite();
-                    //DatabaseUtils.removeFavorite(movieId, getApplicationContext());
+                    isNotFavoriteUi();
+                    DatabaseUtils.removeFavorite(movieId, context);
                 }
             }
         });
@@ -153,9 +153,9 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         Picasso.with(context).load(pathToPoster).into(mBinding.poster);
 
         if(!DatabaseUtils.isFavorite(movieId, context)){
-            removeFavorite();
+            isNotFavoriteUi();
         }else if(DatabaseUtils.isFavorite(movieId, context)){
-            addFavorite();
+            isFavoriteUi();
         }
 
     }
@@ -165,11 +165,11 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
     }
 
-    private void addFavorite(){
+    private void isFavoriteUi(){
         mBinding.favorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_black_24dp));
     };
 
-    private void removeFavorite(){
+    private void isNotFavoriteUi(){
         mBinding.favorite.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
     };
 

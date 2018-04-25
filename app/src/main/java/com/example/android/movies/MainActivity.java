@@ -18,6 +18,7 @@ import android.view.MenuItem;
 
 import com.example.android.movies.data.Movies;
 import com.example.android.movies.databinding.ActivityMainBinding;
+import com.example.android.movies.utilities.DatabaseUtils;
 import com.example.android.movies.utilities.NetworkUtils;
 import com.example.android.movies.utilities.themovieDbJsonUtils;
 
@@ -106,21 +107,27 @@ public class MainActivity extends AppCompatActivity implements
 
             @Override
             public ArrayList<Movies> loadInBackground() {
+                if (mRequestType == getString(R.string.pref_sort_order_favorites_value)){
+                    ArrayList<Movies> favoriteMovies = DatabaseUtils.getFavorites(MainActivity.this);
 
-                URL movieRequestUrl = NetworkUtils.buildMainUrl(mRequestType, API_KEY);
+                    return favoriteMovies;
+                }
+                else {
+                    URL movieRequestUrl = NetworkUtils.buildMainUrl(mRequestType, API_KEY);
 
-                try {
-                    String jsonMovieResponse = NetworkUtils
-                            .getResponseFromHttpUrl(movieRequestUrl);
+                    try {
+                        String jsonMovieResponse = NetworkUtils
+                                .getResponseFromHttpUrl(movieRequestUrl);
 
-                    ArrayList<Movies> simpleJsonMoviesData = themovieDbJsonUtils
-                            .getMoviesFromJson(MainActivity.this, jsonMovieResponse);
+                        ArrayList<Movies> simpleJsonMoviesData = themovieDbJsonUtils
+                                .getMoviesFromJson(MainActivity.this, jsonMovieResponse);
 
-                    return simpleJsonMoviesData;
+                        return simpleJsonMoviesData;
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
                 }
             }
 
@@ -169,13 +176,11 @@ public class MainActivity extends AppCompatActivity implements
         Intent detailIntent = new Intent(MainActivity.this, DetailActivity.class);
         detailIntent.putExtra("movieId",mMovieData.get(position).movieId);
         detailIntent.putExtra("API_KEY",API_KEY);
-        Log.v(TAG, "movieId" + mMovieData.get(position).movieId);
         startActivity(detailIntent);
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-
     }
 
     @Override

@@ -19,8 +19,11 @@
     <string name="pref_sort_order_label" translatable="true">Sort order</string>
     <string name="pref_sort_order_popular_label" translatable="true">most popular</string>
     <string name="pref_sort_order_rated_label" translatable="true">highest rated</string>
+    <string name="pref_sort_order_favorites_label" translatable="true">favorites</string>
+
     <string name="pref_sort_order_popular_value" translatable="true">popular</string>
     <string name="pref_sort_order_rated_value" translatable="true">top_rated</string>
+    <string name="pref_sort_order_favorites_value" translatable="true">favorites</string>
 
 
 </resources>
