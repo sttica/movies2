@@ -33,7 +33,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private static final int MOVIE_LOADER_ID = 1;
 
     private String API_KEY;
-
     private String movieId;
 
     private ArrayList<Movie> mMovieData = null;
@@ -52,6 +51,26 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
+
+        mBinding.voteCount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent reviewIntent = new Intent(DetailActivity.this, ReviewActivity.class);
+                reviewIntent.putExtra("movieId",movieId);
+                reviewIntent.putExtra("API_KEY",API_KEY);
+                startActivity(reviewIntent);
+            }
+        });
+
+        mBinding.voteAverage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent reviewIntent = new Intent(DetailActivity.this, ReviewActivity.class);
+                reviewIntent.putExtra("movieId",movieId);
+                reviewIntent.putExtra("API_KEY",API_KEY);
+                startActivity(reviewIntent);
+            }
+        });
 
         if(bundle!=null)
         {
@@ -146,7 +165,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         mBinding.title.setText(mMovieData.get(0).title);
         mBinding.releaseDate.setText(mMovieData.get(0).release_date);
         mBinding.plot.setText(mMovieData.get(0).overview);
-        mBinding.voteAverage.setText(mMovieData.get(0).vote_average.toString());
+        mBinding.voteAverage.setText(String.valueOf(mMovieData.get(0).vote_average));
+        mBinding.voteCount.setText(String.valueOf(mMovieData.get(0).vote_count));
 
         Context context = mBinding.poster.getContext();
         String pathToPoster = NetworkUtils.BASE_IMG_URL + "/" + context.getString(R.string.posterLoadSize) + "/" + mMovieData.get(0).poster_path;

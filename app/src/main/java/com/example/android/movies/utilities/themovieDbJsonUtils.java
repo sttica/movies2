@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.android.movies.data.Movie;
 import com.example.android.movies.data.Movies;
+import com.example.android.movies.data.Review;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,8 +53,33 @@ public class themovieDbJsonUtils {
                 movieJson.getString("release_date"),
                 movieJson.getString("overview"),
                 movieJson.getDouble("vote_average"),
+                movieJson.getInt("vote_count"),
                 movieJson.getString("poster_path")
         ));
+
+
+        return result;
+    }
+
+    public static ArrayList<Review> getReviewFromJson(Context context, String reviewJsonStr)
+            throws JSONException {
+
+        JSONObject reviewJson = new JSONObject(reviewJsonStr);
+
+        JSONArray resultsJson = reviewJson.getJSONArray("results");
+
+        int resultsJsonLength = resultsJson.length();
+        ArrayList<Review> result = new ArrayList<>();
+
+        if (resultsJsonLength > 0) {
+            for (int i = 0; i < resultsJsonLength; i++) {
+                result.add(new Review(
+                        resultsJson.getJSONObject(i).getString("author"),
+                        resultsJson.getJSONObject(i).getString("content")
+                ));
+            }
+        }
+
 
 
         return result;

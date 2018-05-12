@@ -4,7 +4,11 @@
     <string name="title_label" translatable="false">Movie title</string>
     <string name="releaseDate_label" translatable="false">01.01.2018</string>
     <string name="vote_label" translatable="false">7.7</string>
+    <string name="voteCount_label" translatable="false">1234</string>
     <string name="plot_label" translatable="false">This movie is about ...</string>
+
+    <string name="reviewAuthor_label" translatable="false">Author</string>
+    <string name="reviewContent_label" translatable="false">Review content</string>
 
     <string name="poster_ContentDescription">Movie poster</string>
     <string name="favorite_ContentDescription">favorite icon</string>
@@ -24,6 +28,8 @@
     <string name="pref_sort_order_popular_value" translatable="true">popular</string>
     <string name="pref_sort_order_rated_value" translatable="true">top_rated</string>
     <string name="pref_sort_order_favorites_value" translatable="true">favorites</string>
+
+
 
 
 </resources>

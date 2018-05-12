@@ -41,29 +41,51 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:text="@string/vote_label"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintEnd_toStartOf="@+id/favorite"
                 app:layout_constraintTop_toTopOf="@+id/releaseDate" />
+
+            <TextView
+                android:id="@+id/voteCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp"
+                android:text="@string/voteCount_label"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="@+id/voteAverage"
+                app:layout_constraintStart_toStartOf="@+id/voteAverage"
+                app:layout_constraintTop_toBottomOf="@+id/voteAverage" />
 
             <ImageView
                 android:id="@+id/favorite"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginBottom="0dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/ic_star_border_black_24dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="0dp"
                 android:contentDescription="@string/favorite_ContentDescription"
-                app:layout_constraintTop_toBottomOf="@+id/poster"
-                app:layout_constraintEnd_toEndOf="parent"                 />
+                android:src="@drawable/ic_star_border_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/voteCount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/voteAverage" />
 
             <TextView
                 android:id="@+id/plot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/plot_label"
-                app:layout_constraintStart_toStartOf="@+id/releaseDate"
-                app:layout_constraintTop_toBottomOf="@+id/releaseDate" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/voteCount" />
 
             <ImageView
                 android:id="@+id/poster"
