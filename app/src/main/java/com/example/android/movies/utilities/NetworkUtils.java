@@ -21,6 +21,9 @@ public class NetworkUtils {
 
     public static final String BASE_IMG_URL = "https://image.tmdb.org/t/p/";
 
+    public static final String YOUTUBE_URL = "https://www.youtube.com";
+
+
     private static final String BASE_URL =
             "https://api.themoviedb.org/3/movie/";
 
@@ -74,6 +77,34 @@ public class NetworkUtils {
         }
 
         return url;
+    }
+
+    public static URL buildTrailerUrl(String movieId,String API_KEY) {
+
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(movieId)
+                .appendPath("videos")
+                .appendQueryParameter("api_key", valueOf(API_KEY))
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+    public static Uri buildTrailerVideoUrl(String key) {
+
+        Uri uri = Uri.parse(YOUTUBE_URL).buildUpon()
+                .appendPath("watch")
+                .appendQueryParameter("v", key)
+                .build();
+
+        return uri;
     }
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {

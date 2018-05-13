@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.android.movies.data.Movie;
 import com.example.android.movies.data.Movies;
 import com.example.android.movies.data.Review;
+import com.example.android.movies.data.Trailer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,6 +57,30 @@ public class themovieDbJsonUtils {
                 movieJson.getInt("vote_count"),
                 movieJson.getString("poster_path")
         ));
+
+
+        return result;
+    }
+
+    public static ArrayList<Trailer> getTrailerFromJson(Context context, String trailerJsonStr)
+            throws JSONException {
+
+        JSONObject trailerJson = new JSONObject(trailerJsonStr);
+
+        JSONArray resultsJson = trailerJson.getJSONArray("results");
+
+        int resultsJsonLength = resultsJson.length();
+        ArrayList<Trailer> result = new ArrayList<>();
+
+        if (resultsJsonLength > 0) {
+            for (int i = 0; i < resultsJsonLength; i++) {
+                result.add(new Trailer(
+                        resultsJson.getJSONObject(i).getString("key"),
+                        resultsJson.getJSONObject(i).getString("name")
+                ));
+            }
+        }
+
 
 
         return result;
