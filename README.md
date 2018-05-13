@@ -12,3 +12,6 @@ In this stage I added additional functionality to the app from Stage 1
 Use a ConentProvider
 Hide the API key - I adapted the example code provided here https://medium.com/@abhi007tyagi/storing-api-keys-using-android-ndk-6abb0adcadad
 -> thanks to Abhinav Tyagi!
+Start several ASYNC tasks in one activity
+Dynamically extend an existing layout (for the trailers)
+Add SQLite persistence for movie favorites
